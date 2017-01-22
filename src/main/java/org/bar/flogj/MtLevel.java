@@ -3,13 +3,13 @@ package org.bar.flogj;
 import org.apache.log4j.Level;
 
 public class MtLevel extends Level {
-    public static final int MT_TRACE_INT = Level.DEBUG_INT + 1;
-    public static final int MT_DEBUG_INT = Level.DEBUG_INT + 2;
-    public static final int MT_INFO_INT = Level.INFO_INT + 1;
-    public static final int MT_WARN_INT = Level.WARN_INT + 1;
-    public static final int MT_ERROR_INT = Level.ERROR_INT + 1;
-    public static final int MT_FATAL_INT = Level.FATAL_INT + 1;
-    public static final int MT_REPORT_INT = Level.FATAL_INT + 2;
+    public static final int MT_TRACE_INT = Level.DEBUG_INT - 1;
+    public static final int MT_DEBUG_INT = Level.DEBUG_INT;
+    public static final int MT_INFO_INT = Level.INFO_INT;
+    public static final int MT_WARN_INT = Level.WARN_INT;
+    public static final int MT_ERROR_INT = Level.ERROR_INT;
+    public static final int MT_FATAL_INT = Level.FATAL_INT;
+    public static final int MT_REPORT_INT = Level.FATAL_INT + 1;
 
     private static final String MT_TRACE_STR = "trace";
     private static final String MT_DEBUG_STR = "debug";
@@ -33,7 +33,7 @@ public class MtLevel extends Level {
     }
 
     public static Level toLevel(String sArg) {
-        return (Level) toLevel(sArg, MtLevel.MT_INFO);
+        return (Level) toLevel(sArg, MtLevel.INFO);
     }
 
     public static Level toLevel(String sArg, Level defaultValue) {
