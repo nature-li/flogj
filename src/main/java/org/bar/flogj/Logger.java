@@ -33,6 +33,7 @@ public class Logger {
         String message = "";
         message += "[" + now() + "]\u001e";
         message += "[" + level + "]\u001e";
+        message += "[" + Thread.currentThread().getId() + "]\u001e";
         message += "[" + position() + "]\u001e";
         message += "[" + env + "]\u001e";
         message += "[" + pvId + "]\u001e";
