@@ -1,8 +1,7 @@
 package org.bar.flogj;
 
-public enum MtEnv {
+public enum Env {
     develop,
     abtest,
     product,
 }
-

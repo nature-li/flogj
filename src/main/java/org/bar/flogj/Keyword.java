@@ -1,6 +1,6 @@
 package org.bar.flogj;
 
-public enum MtKeyWord {
+public enum Keyword {
     normal,
     request,
     response,
