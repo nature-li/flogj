@@ -138,7 +138,9 @@ class Controller implements Runnable {
         }
 
         // start the writer thread
-        this.thread.start();
+        if (this.async) {
+            this.thread.start();
+        }
         return true;
     }
 
@@ -157,7 +159,9 @@ class Controller implements Runnable {
             }
 
             // wait write thread exit
-            this.thread.join();
+            if (this.async) {
+                this.thread.join();
+            }
 
             // stop collector thread
             this.writer.stop();
