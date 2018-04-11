@@ -9,19 +9,19 @@ class Record {
         this.msg = msg;
     }
 
-    public String getMsg() {
+    String getMsg() {
         return msg;
     }
 
-    public void setMsg(String msg) {
+    void setMsg(String msg) {
         this.msg = msg;
     }
 
-    public Level getLevel() {
+    Level getLevel() {
         return level;
     }
 
-    public void setLevel(Level level) {
+    void setLevel(Level level) {
         this.level = level;
     }
 }

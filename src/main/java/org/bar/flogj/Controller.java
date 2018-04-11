@@ -20,8 +20,15 @@ class Controller implements Runnable {
     private Thread thread = new Thread(this);
     private int flag = 1;
 
+    // sync or async
+    private boolean async = true;
+
     Controller(Writer writer) {
         this.writer = writer;
+    }
+
+    void setAsync(boolean async) {
+        this.async = async;
     }
 
     /**
@@ -30,10 +37,15 @@ class Controller implements Runnable {
      * @param msg
      */
     boolean put(Level level, String msg) {
-        // new record
-        Record record = new Record(level, msg);
-
         try {
+            // new record
+            Record record = new Record(level, msg);
+
+            // if not async just write file
+            if (!this.async) {
+                return this.writer.writeFlushRotate(record);
+            }
+
             // lock
             this.lock.lock();
 
@@ -50,7 +62,7 @@ class Controller implements Runnable {
                         return false;
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Syslog.error(e);
                 }
             }
 
@@ -88,7 +100,7 @@ class Controller implements Runnable {
                 try {
                     this.empty.await(5, TimeUnit.SECONDS);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Syslog.error(e);
                 }
             }
 
@@ -113,8 +125,16 @@ class Controller implements Runnable {
     boolean start() {
         // start collector thread
         if (!this.writer.start()) {
-            System.out.println("start collector thread failed");
+            Syslog.error("start collector thread failed");
             return false;
+        }
+
+        // unset stop flag
+        try {
+            this.lock.lock();
+            this.flag = 0;
+        } finally {
+            this.lock.unlock();
         }
 
         // start the writer thread
@@ -142,7 +162,7 @@ class Controller implements Runnable {
             // stop collector thread
             this.writer.stop();
         } catch (Exception e) {
-            e.printStackTrace();
+            Syslog.error(e);
         }
     }
 
@@ -150,14 +170,6 @@ class Controller implements Runnable {
      * writer thread function
      */
     public void run() {
-        // unset stop flag
-        try {
-            this.lock.lock();
-            this.flag = 0;
-        } finally {
-            this.lock.unlock();
-        }
-
         // handle data in a while loop
         while (true) {
             // get data queue and handle it
@@ -165,7 +177,12 @@ class Controller implements Runnable {
             if (queue == null) {
                 break;
             }
+
+            // write data
             this.writer.write(queue);
+
+            // rotate
+            this.writer.rotate();
         }
     }
 }
