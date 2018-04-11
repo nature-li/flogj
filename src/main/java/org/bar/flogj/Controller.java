@@ -38,6 +38,9 @@ class Controller implements Runnable {
      */
     boolean put(Level level, String msg) {
         try {
+            // lock
+            this.lock.lock();
+
             // new record
             Record record = new Record(level, msg);
 
@@ -45,9 +48,6 @@ class Controller implements Runnable {
             if (!this.async) {
                 return this.writer.writeFlushRotate(record);
             }
-
-            // lock
-            this.lock.lock();
 
             // return if stop flag is set
             if (this.flag == 1) {
