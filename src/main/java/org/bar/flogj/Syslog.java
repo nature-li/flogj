@@ -1,4 +1,4 @@
-package com.meitu.mtlog;
+package org.bar.flogj;
 
 import com.sun.jna.Library;
 import com.sun.jna.Memory;
