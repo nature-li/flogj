@@ -52,7 +52,7 @@ class Test implements Runnable {
         this.stop();
         long e = System.currentTimeMillis();
         long t = e - s;
-        long speed = 4 * 30 * 7 * t / 100;
+        long speed = 4 * 30 * 10000 * 7 / t * 1000;
         System.out.println("qps: " + speed);
     }
 }
