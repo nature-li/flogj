@@ -248,7 +248,7 @@ class Writer implements Runnable {
      */
     public void run() {
         // do NOT need to delete redundant files
-        if (this.maxFileSize < 0) {
+        if (this.maxFileCount < 0) {
             return;
         }
 
