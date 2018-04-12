@@ -55,6 +55,13 @@ public class Logger {
     }
 
     // default: async=true
+    public boolean init(Env environment, String target, String fileName, boolean async) {
+        long maxFileSize = 100 * 1024 * 1024;
+        long maxFileCount = -1;
+        return this.init(environment, target, fileName, maxFileSize, maxFileCount, async);
+    }
+
+    // default: async=true
     public boolean init(Env environment, String target, String fileName, long maxFileSize, long maxFileCount) {
         return init(environment, target, fileName, maxFileSize, maxFileCount, true);
     }
