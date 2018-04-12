@@ -199,11 +199,11 @@ class FileInfo {
     }
 
     void rotate() {
-        this.close();
-
         if (this.curLength > 0) {
+            this.close();
             this.rename();
         } else {
+            this.close();
             this.delete();
         }
 
