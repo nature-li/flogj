@@ -47,13 +47,20 @@ public class Logger {
         controller.put(lvl, message);
     }
 
+    // default: async=true
     public boolean init(Env environment, String target, String fileName) {
         long maxFileSize = 100 * 1024 * 1024;
         long maxFileCount = -1;
-        return this.init(environment, target, fileName, maxFileSize, maxFileCount);
+        return this.init(environment, target, fileName, maxFileSize, maxFileCount, true);
     }
 
+    // default: async=true
     public boolean init(Env environment, String target, String fileName, long maxFileSize, long maxFileCount) {
+        return init(environment, target, fileName, maxFileSize, maxFileCount, true);
+    }
+
+    // need: set async
+    public boolean init(Env environment, String target, String fileName, long maxFileSize, long maxFileCount, boolean async) {
         if (!Syslog.init()) {
             System.out.println("logger init syslog failed");
             return false;
@@ -63,21 +70,13 @@ public class Logger {
         Writer writer = new Writer(target, fileName, maxFileSize, maxFileCount);
         controller = new Controller(writer);
 
+        this.controller.setAsync(async);
         if (!controller.start()) {
             String msg = "logger start controller failed";
             System.out.println(msg);
             Syslog.error(msg);
             return false;
         }
-        return true;
-    }
-
-    public boolean setAsync(boolean async) {
-        if (this.controller == null) {
-            return false;
-        }
-
-        this.controller.setAsync(async);
         return true;
     }
 
